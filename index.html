@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Birthday Hunt</title>
+
+  <style>
+    body {
+      font-family: 'Poppins', Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      background: linear-gradient(135deg, #ffdee9, #b5fffc);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+
+    .step {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.9);
+      padding: 30px 20px;
+      border-radius: 20px;
+      width: 90%;
+      max-width: 420px;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+      animation: fadeIn 0.6s ease;
+    }
+
+    .active {
+      display: flex;
+    }
+
+    p {
+      font-size: 18px;
+      color: #333;
+    }
+
+    input {
+      padding: 12px;
+      font-size: 16px;
+      width: 100%;
+      max-width: 300px;
+      border-radius: 12px;
+      border: 1px solid #ddd;
+      outline: none;
+      margin-top: 10px;
+    }
+
+    button {
+      margin-top: 15px;
+      padding: 12px 24px;
+      font-size: 16px;
+      border: none;
+      border-radius: 25px;
+      cursor: pointer;
+      background: linear-gradient(135deg, #ff758c, #ff7eb3);
+      color: white;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    }
+
+    .fun-action {
+      margin-top: 12px;
+      font-size: 14px;
+      color: #ff4d6d;
+      font-weight: bold;
+    }
+
+    img {
+      width: 100%;
+      max-width: 320px;
+      border-radius: 15px;
+      margin-top: 15px;
+    }
+
+    .popup {
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(135deg, #ff758c, #ff7eb3);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      color: white;
+      text-align: center;
+      z-index: 999;
+      animation: fadeIn 1s ease;
+      font-size: 36px;
+    }
+
+    .popup p {
+      font-size: 22px;
+      margin-top: 20px;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Step 0 -->
+  <div id="step0" class="step active">
+    <p>Don’t assume anything. Just answer honestly. Each answer decides where you go next.</p>
+    <button onclick="nextStep(1)">Continue</button>
+  </div>
+
+  <!-- Step 1 -->
+  <div id="step1" class="step">
+    <p>How do I call you when I want to tell you something interesting?</p>
+    <input type="text" id="answer1" placeholder="Type your answer" />
+    <button onclick="checkAnswer(1)">Submit</button>
+    <p id="hint1" class="fun-action"></p>
+  </div>
+
+  <!-- Step 2 -->
+  <div id="step2" class="step">
+    <p>Where do we almost always end up when we go out to eat?</p>
+    <input type="text" id="answer2" placeholder="Type your answer" />
+    <button onclick="checkAnswer(2)">Submit</button>
+    <p id="hint2" class="fun-action"></p>
+  </div>
+
+  <!-- Step 3 -->
+  <div id="step3" class="step">
+    <p>Where is this place?</p>
+    <img src="campus_photo.jpg" alt="Campus Place" />
+    <input type="text" id="answer3" placeholder="Type your answer" />
+    <button onclick="checkAnswer(3)">Submit</button>
+    <p id="hint3" class="fun-action"></p>
+  </div>
+
+  <!-- Step 4 -->
+  <div id="step4" class="step">
+    <p>Where do you laugh the most?</p>
+    <input type="text" id="answer4" placeholder="Type your answer" />
+    <button onclick="checkAnswer(4)">Submit</button>
+    <p id="hint4" class="fun-action"></p>
+  </div>
+
+  <!-- Step 5 -->
+  <div id="step5" class="step">
+    <p>Go to the place in your house where you made the favorite reel — the one I like the most.</p>
+    <button onclick="nextStep(6)">I’m there!</button>
+    <p class="fun-action">Make a silly pose as if filming a reel 😝</p>
+  </div>
+
+  <!-- Step 6 -->
+  <div id="step6" class="step">
+    <p>One word:</p>
+    <input type="text" id="answer6" placeholder="Type the word" />
+    <button onclick="checkAnswer(6)">Submit</button>
+    <p id="hint6" class="fun-action"></p>
+  </div>
+
+  <!-- Popup -->
+  <div id="popup" class="popup">
+    🎉 Happy Birthday 🎉
+    <p>Now come outside ❤️</p>
+  </div>
+
+  <script>
+    let attempts = [0,0,0,0,0,0,0];
+
+    const answers = [
+      [],
+      ["damsu","damsuu","damsuuu","damsuuuu"],
+      ["aunty mess"],
+      ["smv"],
+      ["avins"],
+      [],
+      ["us","always","home"]
+    ];
+
+    function nextStep(n) {
+      document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+      document.getElementById("step" + n).classList.add('active');
+    }
+
+    function checkAnswer(step) {
+      let input = document.getElementById("answer" + step).value.toLowerCase().trim();
+      attempts[step]++;
+
+      if (answers[step].includes(input)) {
+        if (step === 6) {
+          document.getElementById("popup").style.display = "flex";
+        } else {
+          nextStep(step + 1);
+        }
+      } else {
+        if (attempts[step] >= 3) {
+          document.getElementById("hint" + step).innerText = getHint(step);
+        }
+      }
+    }
+
+    function getHint(step) {
+      switch(step) {
+        case 1: return "Hint: The name you stretch 😌";
+        case 2: return "Hint: Our favourite mess";
+        case 3: return "Hint: Chemistry class place";
+        case 4: return "Hint: Cold vibes & laughs";
+        case 6: return "Hint: Us ❤️";
+        default: return "";
+      }
+    }
+  </script>
+
+</body>
+</html>
