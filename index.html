@@ -3,14 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Just Follow the Steps 💫</title>
+<title>Just Follow the Steps 💖</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
 <style>
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
 body {
   margin: 0;
@@ -23,22 +21,42 @@ body {
   overflow: hidden;
 }
 
+/* Floating hearts */
+.heart {
+  position: fixed;
+  bottom: -20px;
+  font-size: 18px;
+  animation: floatUp 8s linear infinite;
+  opacity: 0.7;
+}
+
+@keyframes floatUp {
+  from {
+    transform: translateY(0);
+    opacity: 0.8;
+  }
+  to {
+    transform: translateY(-110vh);
+    opacity: 0;
+  }
+}
+
+/* Card */
 .step {
   display: none;
   flex-direction: column;
   align-items: center;
-  background: rgba(255,255,255,0.9);
+  background: rgba(255,255,255,0.92);
   padding: 30px 22px;
   border-radius: 25px;
   width: 90%;
   max-width: 420px;
   box-shadow: 0 20px 40px rgba(0,0,0,0.2);
   animation: fadeUp 0.6s ease;
+  z-index: 2;
 }
 
-.step.active {
-  display: flex;
-}
+.step.active { display: flex; }
 
 p {
   font-size: 18px;
@@ -70,9 +88,7 @@ button {
   transition: transform 0.2s ease;
 }
 
-button:hover {
-  transform: scale(1.05);
-}
+button:hover { transform: scale(1.05); }
 
 .fun-action {
   margin-top: 12px;
@@ -88,6 +104,7 @@ img {
   margin-top: 15px;
 }
 
+/* Popup */
 .popup {
   position: fixed;
   inset: 0;
@@ -102,95 +119,95 @@ img {
   animation: fadeUp 1s ease;
 }
 
-.popup h1 {
-  font-size: 42px;
-  margin: 0;
-}
-
-.popup p {
-  font-size: 20px;
-  margin-top: 15px;
-}
+.popup h1 { font-size: 42px; margin: 0; }
+.popup p { font-size: 20px; margin-top: 15px; }
 
 @keyframes fadeUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 </style>
 </head>
 
 <body>
 
-<!-- STEP 0 -->
+<!-- Steps -->
 <div id="step0" class="step active">
   <p>Don’t overthink.  
   Just answer honestly 💫</p>
   <button onclick="nextStep(1)">Let’s start</button>
 </div>
 
-<!-- STEP 1 -->
 <div id="step1" class="step">
   <p>How do I call you when I want to gossip? 😏</p>
-  <input id="answer1" placeholder="Type here">
+  <input id="answer1">
   <button onclick="checkAnswer(1)">Submit</button>
   <p id="hint1" class="fun-action"></p>
 </div>
 
-<!-- STEP 2 -->
 <div id="step2" class="step">
-  <p>Where do we end up almost every time we go out to eat? 🍽️</p>
-  <input id="answer2" placeholder="Type here">
+  <p>Where do we always end up when we go out to eat? 🍽️</p>
+  <input id="answer2">
   <button onclick="checkAnswer(2)">Submit</button>
   <p id="hint2" class="fun-action"></p>
 </div>
 
-<!-- STEP 3 -->
 <div id="step3" class="step">
   <p>Where is this place?</p>
   <img src="campus_photo.jpg">
-  <input id="answer3" placeholder="Type here">
+  <input id="answer3">
   <button onclick="checkAnswer(3)">Submit</button>
   <p id="hint3" class="fun-action"></p>
 </div>
 
-<!-- STEP 4 -->
 <div id="step4" class="step">
   <p>Where do you laugh the most? 😂</p>
-  <input id="answer4" placeholder="Type here">
+  <input id="answer4">
   <button onclick="checkAnswer(4)">Submit</button>
   <p id="hint4" class="fun-action"></p>
 </div>
 
-<!-- STEP 5 -->
 <div id="step5" class="step">
   <p>Go to the place where you made the reel I love the most 💕</p>
-  <p class="fun-action">Do a goofy pose like you’re filming 🎥</p>
+  <p class="fun-action">Do a goofy reel pose 🎥</p>
   <button onclick="nextStep(6)">I’m there</button>
 </div>
 
-<!-- STEP 6 -->
 <div id="step6" class="step">
   <p>One word. Just us.</p>
-  <input id="answer6" placeholder="Type here">
+  <input id="answer6">
   <button onclick="checkAnswer(6)">Submit</button>
   <p id="hint6" class="fun-action"></p>
 </div>
 
-<!-- POPUP -->
+<!-- Birthday Popup -->
 <div id="popup" class="popup">
   <h1>🎉 Happy Birthday 🎉</h1>
   <p>Now come outside 💖</p>
 </div>
 
 <script>
-let attempts = [0,0,0,0,0,0,0];
+/* Floating hearts generator */
+setInterval(() => {
+  const heart = document.createElement("div");
+  heart.className = "heart";
+  heart.style.left = Math.random() * 100 + "vw";
+  heart.style.animationDuration = (6 + Math.random()*4) + "s";
+  heart.innerHTML = "💗";
+  document.body.appendChild(heart);
+  setTimeout(() => heart.remove(), 9000);
+}, 500);
 
+/* Midnight trigger */
+setInterval(() => {
+  const now = new Date();
+  if(now.getHours() === 0 && now.getMinutes() === 0){
+    document.getElementById("popup").style.display="flex";
+  }
+}, 1000);
+
+/* Quiz logic */
+let attempts = [0,0,0,0,0,0,0];
 const answers = [
   [],
   ["damsu","damsuu","damsuuu","damsuuuu"],
@@ -207,32 +224,28 @@ function nextStep(n){
 }
 
 function checkAnswer(step){
-  let input = document.getElementById("answer"+step)?.value.toLowerCase().trim();
+  const input = document.getElementById("answer"+step)?.value.toLowerCase().trim();
   attempts[step]++;
   if(answers[step].some(a=>a===input)){
-    if(step===6){
-      document.getElementById("popup").style.display="flex";
-    } else {
-      nextStep(step+1);
-    }
-  } else {
-    if(attempts[step]>=3){
-      document.getElementById("hint"+step).innerText = getHint(step);
-    }
+    step === 6 ? document.getElementById("popup").style.display="flex" : nextStep(step+1);
+  } else if(attempts[step]>=3){
+    document.getElementById("hint"+step).innerText = getHint(step);
   }
 }
 
 function getHint(step){
-  if(step===1) return "Starts with d 😌";
-  if(step===2) return "Our comfort food place";
-  if(step===3) return "Where chemistry happened";
-  if(step===4) return "Think of chaos & laughter";
-  if(step===6) return "Not a place. Not a thing.";
+  if(step===1) return "Starts with d 😉";
+  if(step===2) return "Comfort food place";
+  if(step===3) return "Chemistry memories";
+  if(step===4) return "Laugh chaos zone";
+  if(step===6) return "Not a place 💞";
 }
 </script>
 
 </body>
 </html>
+
+
 
 
 
